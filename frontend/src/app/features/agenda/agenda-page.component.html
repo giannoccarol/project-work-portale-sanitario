@@ -1,0 +1,63 @@
+<div class="page">
+  <div class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'agenda.eyebrow' | transloco }}</span>
+      <h1>{{ 'agenda.title' | transloco }}</h1>
+      <p>{{ 'agenda.subtitle' | transloco }}</p>
+    </div>
+  </div>
+  <div class="stat-grid">
+    <article class="panel stat-card">
+      <span class="stat-card__icon"><i class="pi pi-calendar"></i></span><strong>{{ today().length }}</strong
+      ><small>{{ 'agenda.todayVisits' | transloco }}</small>
+    </article>
+    <article class="panel stat-card">
+      <span class="stat-card__icon"><i class="pi pi-calendar-plus"></i></span><strong>{{ upcoming().length }}</strong
+      ><small>{{ 'agenda.scheduled' | transloco }}</small>
+    </article>
+    <article class="panel stat-card">
+      <span class="stat-card__icon"><i class="pi pi-folder-open"></i></span><strong>{{ authorized().length }}</strong
+      ><small>{{ 'agenda.authorizedFolders' | transloco }}</small>
+    </article>
+    <article class="panel stat-card">
+      <span class="stat-card__icon"><i class="pi pi-check-circle"></i></span><strong>{{ completed().length }}</strong
+      ><small>{{ 'stats.completedVisits' | transloco }}</small>
+    </article>
+  </div>
+  @if (!upcoming().length) {
+    <div class="panel empty-state">
+      <i class="pi pi-calendar-times"></i>
+      <h2>{{ 'agenda.freeTitle' | transloco }}</h2>
+      <p>{{ 'agenda.emptyText' | transloco }}</p>
+    </div>
+  } @else {
+    <section class="panel agenda">
+      <div class="agenda-head">
+        <strong>{{ 'agenda.nextVisits' | transloco }}</strong><span>{{ 'agenda.timezone' | transloco }}</span>
+      </div>
+      @for (a of upcoming(); track a.id) {
+        <article>
+          <time
+            ><strong>{{ a.startTime | date: 'HH:mm' : 'Europe/Rome' }}</strong
+            ><span>{{ a.startTime | date: 'EEE d MMM' : 'Europe/Rome' : locale() }}</span></time
+          ><p-avatar [label]="initials(a)" shape="square" class="app-avatar app-avatar--small app-avatar--soft" />
+          <div class="patient">
+            <strong>{{ patientName(a) }}</strong
+            ><small>{{ a.reason || ('agenda.noReason' | transloco) }} · {{ a.structure.name }}</small>
+          </div>
+          <p-tag
+            [value]="a.clinicalDataAccessGranted ? ('agenda.folderAuthorized' | transloco) : ('agenda.dataNotShared' | transloco)"
+            [severity]="a.clinicalDataAccessGranted ? 'success' : 'secondary'"
+          /><p-button
+            [label]="'agenda.openFolder' | transloco"
+            icon="pi pi-folder-open"
+            [outlined]="true"
+            size="small"
+            [disabled]="!a.clinicalDataAccessGranted"
+            (onClick)="openFolder(a)"
+          />
+        </article>
+      }
+    </section>
+  }
+</div>

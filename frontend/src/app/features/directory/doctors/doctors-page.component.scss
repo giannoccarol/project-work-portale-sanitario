@@ -1,0 +1,50 @@
+.directory-hero {
+  padding: 4.5rem 0 6rem;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--brand) 8%, var(--canvas)), var(--canvas));
+}
+.directory-hero h1 {
+  font-size: clamp(2.3rem, 5vw, 4rem);
+  margin-bottom: 0.8rem;
+}
+.directory-hero p {
+  max-width: 40rem;
+  color: var(--muted);
+  margin: 0;
+}
+.directory-content {
+  margin-top: -2.2rem;
+}
+.filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 1rem;
+  align-items: end;
+  box-shadow: var(--shadow);
+}
+.results-head {
+  padding: 2rem 0.2rem 1rem;
+}
+.results-head span {
+  color: var(--muted);
+}
+@media (max-width: 680px) {
+  .filters {
+    grid-template-columns: 1fr;
+  }
+  .directory-hero {
+    padding: 1.6rem 0 3rem;
+  }
+  .directory-hero h1 {
+    font-size: 1.85rem;
+    margin-bottom: 0.45rem;
+  }
+  .directory-hero p {
+    font-size: 0.9rem;
+  }
+  .directory-content {
+    margin-top: -1.4rem;
+  }
+  .results-head {
+    padding: 1rem 0.2rem 0.65rem;
+  }
+}

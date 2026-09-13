@@ -1,0 +1,102 @@
+<div class="page">
+  <div class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'reviews.eyebrow' | transloco }}</span>
+      <h1>{{ 'reviews.title' | transloco }}</h1>
+      <p>{{ 'reviews.subtitle' | transloco }}</p>
+    </div>
+  </div>
+  @if (reviewable().length) {
+    <section class="panel panel-body pending">
+      <div>
+        <h2>{{ 'reviews.pendingTitle' | transloco }}</h2>
+        <p>{{ 'reviews.pendingText' | transloco }}</p>
+      </div>
+      <div class="pending-list flex flex-column mt-4">
+        @for (a of reviewable(); track a.id) {
+          <article class="flex align-items-center gap-3 py-3">
+            <p-avatar [label]="initials(a)" shape="square" class="app-avatar app-avatar--small app-avatar--soft" />
+            <div class="review-card-head flex flex-column">
+              <strong>{{ 'directory.dr' | transloco }} {{ a.doctor.user.firstName }} {{ a.doctor.user.lastName }}</strong
+              ><small
+                >{{ a.doctor.specialization.name }} ·
+                {{ a.startTime | date: 'dd MMMM y' : 'Europe/Rome' : locale() }}</small
+              >
+            </div>
+            <p-button
+              [label]="'reviews.rate' | transloco"
+              icon="pi pi-star"
+              size="small"
+              [loading]="checkingId() === a.id"
+              [disabled]="checkingId() !== null"
+              (onClick)="open(a)"
+            />
+          </article>
+        }
+      </div>
+    </section>
+  }
+  <section>
+    <div class="history-head flex align-items-center justify-content-between mt-5 mb-3">
+      <h2>{{ 'reviews.yourReviews' | transloco }}</h2>
+      <span>{{ 'reviews.publishedCount' | transloco: { count: reviews().length } }}</span>
+    </div>
+    @if (!reviews().length) {
+      <div class="panel empty-state">
+        <i class="pi pi-star"></i>
+        <h2>{{ 'reviews.emptyTitle' | transloco }}</h2>
+        <p>{{ 'reviews.emptyText' | transloco }}</p>
+      </div>
+    } @else {
+      <div class="grid">
+        @for (review of reviews(); track review.id) {
+          <p-card class="review-card col-12 sm:col-6 lg:col-4">
+            <div>
+              <p-avatar [label]="reviewInitials(review)" shape="square" class="app-avatar app-avatar--small app-avatar--soft" />
+              <p-rating [ngModel]="review.rating" [readonly]="true" />
+            </div>
+            <h3>{{ 'directory.dr' | transloco }} {{ review.doctor?.user?.firstName }} {{ review.doctor?.user?.lastName }}</h3>
+            <small>{{ review.createdAt | date: 'dd MMMM y' : 'Europe/Rome' : locale() }}</small>
+            <p>{{ review.comment || ('reviews.noComment' | transloco) }}</p>
+          </p-card>
+        }
+      </div>
+    }
+  </section>
+</div>
+<p-dialog [header]="'reviews.dialogTitle' | transloco" [(visible)]="dialogOpen" [modal]="true" [style]="{ width: 'min(32rem,95vw)' }">
+  @if (selected()) {
+    <div class="stack">
+        <div class="selected-doctor flex align-items-center gap-3">
+        <p-avatar [label]="initials(selected()!)" shape="square" class="app-avatar app-avatar--small app-avatar--soft" />
+        <div>
+          <strong>{{ 'directory.dr' | transloco }} {{ selected()!.doctor.user.firstName }} {{ selected()!.doctor.user.lastName }}</strong
+          ><small>{{ selected()!.doctor.specialization.name }}</small>
+        </div>
+      </div>
+      <div class="field rating-field">
+        <span class="field-label">{{ 'reviews.yourRating' | transloco }}</span><p-rating inputId="review-rating" [(ngModel)]="rating" /><small>{{
+          rating ? ('reviews.ratingOutOf' | transloco: { value: rating }) : ('reviews.selectStars' | transloco)
+        }}</small>
+      </div>
+      <div class="field">
+        <label for="comment">{{ 'reviews.comment' | transloco }} <small>{{ 'common.optional' | transloco }}</small></label
+        ><textarea
+          pTextarea
+          id="comment"
+          [(ngModel)]="comment"
+          maxlength="1000"
+          rows="5"
+          placeholder="{{ 'reviews.commentPlaceholder' | transloco }}"
+        ></textarea>
+      </div>
+    </div>
+  }
+  <ng-template #footer
+    ><p-button [label]="'common.cancel' | transloco" [text]="true" severity="secondary" (onClick)="dialogOpen = false" /><p-button
+      [label]="'reviews.publish' | transloco"
+      icon="pi pi-send"
+      [disabled]="!rating"
+      [loading]="saving()"
+      (onClick)="save()" /></ng-template
+></p-dialog>

@@ -1,0 +1,50 @@
+{
+  "name": "healthcare-portal",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve --port 4200 --proxy-config proxy.conf.json",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit",
+    "lint": "ng lint",
+    "format": "prettier --write \"src/**/*.{ts,html,scss,css}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,html,scss,css}\""
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/cdk": "21.2.14",
+    "@angular/common": "21.2.21",
+    "@angular/compiler": "21.2.21",
+    "@angular/core": "21.2.21",
+    "@angular/forms": "21.2.21",
+    "@angular/platform-browser": "21.2.21",
+    "@angular/router": "21.2.21",
+    "@jsverse/transloco": "8.4.0",
+    "@primeuix/themes": "2.0.3",
+    "primeflex": "4.0.0",
+    "primeicons": "8.0.0",
+    "primeng": "21.1.9",
+    "rxjs": "7.8.2",
+    "tslib": "2.8.1",
+    "zone.js": "0.15.1"
+  },
+  "devDependencies": {
+    "@angular/build": "21.2.21",
+    "@angular/cli": "21.2.21",
+    "@angular/compiler-cli": "21.2.21",
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "angular-eslint": "21.4.0",
+    "eslint": "^10.3.0",
+    "jsdom": "30.0.1",
+    "prettier": "^3.9.6",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.59.2",
+    "vitest": "4.1.11"
+  },
+  "overrides": {
+    "js-yaml": "4.3.1"
+  }
+}

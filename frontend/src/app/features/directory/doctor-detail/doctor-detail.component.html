@@ -1,0 +1,81 @@
+<section class="container detail-page">
+  <a routerLink="/doctors" class="back"><i class="pi pi-arrow-left"></i> {{ 'detail.backToSearch' | transloco }}</a>
+  @if (loading()) {
+    <div class="panel empty-state">
+      <i class="pi pi-spin pi-spinner"></i>
+      <p>{{ 'detail.loading' | transloco }}</p>
+    </div>
+  } @else if (!doctor()) {
+    <div class="panel empty-state">
+      <i class="pi pi-user-minus"></i>
+      <h1>{{ 'detail.unavailableTitle' | transloco }}</h1>
+      <p>{{ 'detail.unavailableText' | transloco }}</p>
+    </div>
+  } @else {
+    <div class="profile-grid">
+      <article class="panel profile-main">
+        <div class="profile-head">
+          <p-avatar [label]="initials()" shape="square" class="app-avatar app-avatar--xxlarge app-avatar--brand" />
+          <div>
+            <span class="availability"><i class="status-dot"></i> {{ 'detail.activeProfile' | transloco }}</span>
+            <h1>{{ 'directory.dr' | transloco }} {{ doctor()!.user.firstName }} {{ doctor()!.user.lastName }}</h1>
+            <strong>{{ doctor()!.specialization.name }}</strong>
+          </div>
+        </div>
+        <section>
+          <h2>{{ 'detail.professionalProfile' | transloco }}</h2>
+          <p>{{ doctor()!.bio || ('directory.defaultBio' | transloco) }}</p>
+        </section>
+        <section>
+          <h2>{{ 'detail.referenceStructure' | transloco }}</h2>
+          <div class="structure">
+            <i class="pi pi-building"></i
+            ><span
+              ><strong>{{ doctor()!.structure.name }}</strong
+              ><small>{{ doctor()!.structure.address }} · {{ doctor()!.structure.phone }}</small></span
+            >
+          </div>
+        </section>
+        <section>
+          <div class="reviews-title">
+            <h2>{{ 'detail.patientReviews' | transloco }}</h2>
+            @if (reviews()) {
+              <span
+                ><strong>{{ reviews()!.average | number: '1.1-1' }}</strong
+                >{{ 'detail.reviewsSummary' | transloco: { count: reviews()!.count } }}</span
+              >
+            }
+          </div>
+          @if (!reviews()?.reviews?.length) {
+            <p class="muted">{{ 'detail.noReviews' | transloco }}</p>
+          } @else {
+            <div class="review-list">
+              @for (review of reviews()!.reviews; track review.id) {
+                <article>
+                  <div>
+                    <strong>{{ review.patient?.firstName }} {{ review.patient?.lastInitial }}.</strong
+                    ><p-rating [ngModel]="review.rating" [readonly]="true" />
+                  </div>
+                  <p>{{ review.comment || ('reviews.noComment' | transloco) }}</p>
+                </article>
+              }
+            </div>
+          }
+        </section>
+      </article>
+      <aside class="panel booking-card">
+        <span class="eyebrow">{{ 'detail.bookOnline' | transloco }}</span>
+        <h2>{{ 'detail.chooseDateTime' | transloco }}</h2>
+        <p>{{ 'detail.bookingIntro' | transloco }}</p>
+        <ul>
+          <li><i class="pi pi-check"></i> {{ 'detail.bulletConfirm' | transloco }}</li>
+          <li><i class="pi pi-check"></i> {{ 'detail.bulletAccess' | transloco }}</li>
+          <li><i class="pi pi-check"></i> {{ 'detail.bulletReport' | transloco }}</li>
+        </ul>
+        <p-button [label]="'detail.seeAvailability' | transloco" icon="pi pi-calendar-plus" fluid (onClick)="book()" /><small
+          >{{ 'detail.loginRequired' | transloco }}</small
+        >
+      </aside>
+    </div>
+  }
+</section>

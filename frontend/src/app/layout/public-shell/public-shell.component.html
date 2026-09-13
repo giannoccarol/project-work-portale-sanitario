@@ -1,0 +1,79 @@
+<a class="skip-link" href="#main-content">{{ 'common.skipToContent' | transloco }}</a>
+<header class="public-header">
+  <div class="container header-inner flex align-items-center justify-content-between gap-5">
+    <div class="header-start flex align-items-center">
+      <p-button
+        class="mobile-menu"
+        icon="pi pi-bars"
+        [text]="true"
+        [rounded]="true"
+        [ariaLabel]="'shell.openMenu' | transloco"
+        (onClick)="drawerOpen.set(true)"
+      />
+      <app-brand />
+    </div>
+    <nav class="header-nav" [attr.aria-label]="'nav.mainAria' | transloco">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">{{
+        'nav.home' | transloco
+      }}</a>
+      <a routerLink="/doctors" routerLinkActive="active">{{ 'nav.doctors' | transloco }}</a>
+    </nav>
+    <div class="header-actions flex align-items-center gap-2">
+      @if (auth.authenticated()) {
+        <p-button
+          class="desktop-only"
+          [label]="'nav.goDashboard' | transloco"
+          icon="pi pi-arrow-right"
+          iconPos="right"
+          (onClick)="go('/app/dashboard')"
+        />
+        <p-button
+          class="mobile-only"
+          [label]="'nav.dashboard' | transloco"
+          icon="pi pi-th-large"
+          (onClick)="go('/app/dashboard')"
+        />
+      } @else {
+        <p-button class="desktop-only" [label]="'nav.login' | transloco" [text]="true" (onClick)="go('/login')" />
+        <p-button class="mobile-only" [label]="'nav.login' | transloco" [outlined]="true" (onClick)="go('/login')" />
+        <p-button class="desktop-only" [label]="'nav.register' | transloco" (onClick)="go('/register')" />
+      }
+    </div>
+  </div>
+</header>
+<main id="main-content"><router-outlet /></main>
+<footer>
+  <div class="container footer-inner flex align-items-center justify-content-between gap-5">
+    <app-brand />
+    <span>© 2026 {{ 'app.name' | transloco }}</span>
+  </div>
+</footer>
+<p-drawer
+  [visible]="drawerOpen()"
+  (visibleChange)="drawerOpen.set($event)"
+  position="left"
+  [header]="'app.name' | transloco"
+>
+  <nav class="drawer-nav flex flex-column gap-2" [attr.aria-label]="'nav.mainAria' | transloco">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="drawerOpen.set(false)">
+      <i class="pi pi-home"></i>{{ 'nav.home' | transloco }}
+    </a>
+    <a routerLink="/doctors" routerLinkActive="active" (click)="drawerOpen.set(false)">
+      <i class="pi pi-search"></i>{{ 'nav.doctors' | transloco }}
+    </a>
+  </nav>
+  <div class="drawer-actions">
+    @if (auth.authenticated()) {
+      <p-button
+        [label]="'nav.goDashboard' | transloco"
+        icon="pi pi-arrow-right"
+        iconPos="right"
+        fluid
+        (onClick)="goApp('/app/dashboard')"
+      />
+    } @else {
+      <p-button [label]="'nav.login' | transloco" [outlined]="true" fluid (onClick)="goApp('/login')" />
+      <p-button [label]="'nav.register' | transloco" fluid (onClick)="goApp('/register')" />
+    }
+  </div>
+</p-drawer>

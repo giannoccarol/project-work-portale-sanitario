@@ -1,0 +1,22 @@
+.table-panel {
+  overflow: hidden;
+}
+.table-head h2 {
+  font-size: 1.15rem;
+  margin: 0;
+}
+.table-head p {
+  font-size: 0.76rem;
+  color: var(--muted);
+  margin: 0;
+}
+td small {
+  display: block;
+  color: var(--muted);
+}
+.actions {
+  text-align: right;
+}
+.p-tabpanels {
+  background: transparent !important;
+}

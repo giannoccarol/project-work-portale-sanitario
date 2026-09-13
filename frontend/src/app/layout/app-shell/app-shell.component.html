@@ -1,0 +1,63 @@
+<a class="skip-link" href="#workspace">{{ 'common.skipToContent' | transloco }}</a>
+<div class="app-layout">
+  <aside class="sidebar flex flex-column p-4">
+    <app-brand />
+    <nav class="flex flex-column gap-2 mt-5" [attr.aria-label]="'nav.privateArea' | transloco">
+      @for (item of navigation(); track item.route) {
+        <a class="flex align-items-center gap-3" [routerLink]="item.route" routerLinkActive="active"
+          ><i [class]="item.icon"></i><span>{{ item.labelKey | transloco }}</span></a
+        >
+      }
+    </nav>
+    <div class="sidebar-help flex flex-column gap-2">
+      <i class="pi pi-shield"></i><strong>{{ 'shell.dataProtected' | transloco }}</strong
+      ><span>{{ 'shell.secureAccess' | transloco }}</span>
+    </div>
+  </aside>
+  <div class="workspace">
+    <header class="app-header flex align-items-center justify-content-between">
+      <p-button
+        class="mobile-menu"
+        icon="pi pi-bars"
+        [text]="true"
+        [rounded]="true"
+        [ariaLabel]="'shell.openMenu' | transloco"
+        (onClick)="drawerOpen.set(true)"
+      />
+      <app-brand class="header-brand" [showSubtitle]="false" />
+      <div class="header-context flex flex-column gap-1">
+        <span>{{ 'shell.personalArea' | transloco }}</span><strong>{{ roleKey() | transloco }}</strong>
+      </div>
+      <div class="profile flex align-items-center gap-3">
+        <p-avatar [label]="initials()" shape="circle" />
+        <span class="flex flex-column"
+          ><strong>{{ fullName() || ('shell.defaultUser' | transloco) }}</strong
+          ><small>{{ auth.user()?.email }}</small></span
+        >
+        <p-button
+          icon="pi pi-sign-out"
+          [text]="true"
+          [rounded]="true"
+          severity="secondary"
+          [ariaLabel]="'shell.logout' | transloco"
+          (onClick)="auth.logout()"
+        />
+      </div>
+    </header>
+    <main id="workspace" class="workspace-content"><router-outlet /></main>
+  </div>
+</div>
+<p-drawer
+  [visible]="drawerOpen()"
+  (visibleChange)="drawerOpen.set($event)"
+  position="left"
+  [header]="'shell.navigation' | transloco"
+>
+  <nav class="drawer-nav flex flex-column gap-2">
+    @for (item of navigation(); track item.route) {
+      <a class="flex align-items-center gap-3" [routerLink]="item.route" routerLinkActive="active" (click)="drawerOpen.set(false)"
+        ><i [class]="item.icon"></i>{{ item.labelKey | transloco }}</a
+      >
+    }
+  </nav>
+</p-drawer>

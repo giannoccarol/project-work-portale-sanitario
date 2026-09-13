@@ -1,0 +1,54 @@
+:host {
+  min-width: 0;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+  color: var(--ink);
+  text-decoration: none;
+  line-height: 1.05;
+}
+.brand__mark {
+  display: grid;
+  place-items: center;
+  width: 2.45rem;
+  height: 2.45rem;
+  border-radius: 0.8rem;
+  background: var(--brand);
+  color: var(--on-brand);
+  box-shadow: var(--shadow-card);
+}
+strong {
+  display: block;
+  font-size: 1.02rem;
+  letter-spacing: -0.02em;
+}
+small {
+  display: block;
+  margin-top: 0.22rem;
+  color: var(--muted);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+@media (max-width: 960px) {
+  .brand {
+    gap: 0.5rem;
+  }
+  .brand__mark {
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 0.65rem;
+  }
+  strong {
+    overflow: hidden;
+    font-size: 0.95rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  small {
+    display: none;
+  }
+}

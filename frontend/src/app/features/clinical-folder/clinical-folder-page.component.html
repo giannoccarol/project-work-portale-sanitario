@@ -1,0 +1,123 @@
+<div class="page folder-page">
+  <div class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'folder.eyebrow' | transloco }}</span>
+      <h1>{{ 'folder.title' | transloco }}</h1>
+      <p>
+        {{
+          auth.role() === 'patient' ? ('folder.subtitlePatient' | transloco) : ('folder.subtitleDoctor' | transloco)
+        }}
+      </p>
+    </div>
+    <span class="security flex align-items-center gap-2"><i class="pi pi-lock"></i> {{ 'folder.securedAccess' | transloco }}</span>
+  </div>
+  @if (loading()) {
+    <div class="panel empty-state">
+      <i class="pi pi-spin pi-spinner"></i>
+      <p>{{ 'folder.loading' | transloco }}</p>
+    </div>
+  } @else if (error()) {
+    <p-message severity="warn">{{ error() }}</p-message>
+  } @else if (folder()) {
+    <section class="panel patient-banner p-4 flex align-items-center gap-3 flex-wrap">
+      <p-avatar [label]="initials()" shape="square" class="app-avatar app-avatar--large app-avatar--brand" />
+      <div class="flex-1">
+        <small>{{ 'folder.patient' | transloco }}</small>
+        <h2>{{ patientName() }}</h2>
+        <p>
+          {{ folder()!.patient.fiscalCode }}
+          @if (folder()!.patient.birthDate) {
+            <span>{{ 'folder.bornOn' | transloco: { date: (folder()!.patient.birthDate | date: 'dd/MM/y') } }}</span>
+          }
+        </p>
+      </div>
+      <div class="structure flex align-items-center gap-2 ml-auto w-full md:w-auto">
+        <i class="pi pi-building"></i><span>{{ structureName() }}</span>
+      </div>
+    </section>
+    <p-tabs value="0" class="folder-tabs"
+      ><p-tablist>
+        @for (section of folder()!.sections; track section.key; let i = $index) {
+          <p-tab [value]="String(i)"
+            ><i [class]="icon(section.key)"></i>{{ label(section.key) }}
+            @if (section.locked) {
+              <i class="pi pi-lock tab-lock"></i>
+            }
+          </p-tab>
+        }</p-tablist
+      ><p-tabpanels>
+        @for (section of folder()!.sections; track section.key; let i = $index) {
+          <p-tabpanel [value]="String(i)"
+            ><div class="section-panel p-4">
+              @if (section.locked) {
+                <div class="empty-state">
+                  <i class="pi pi-lock"></i>
+                  <h2>{{ 'folder.lockedTitle' | transloco }}</h2>
+                  <p>{{ 'folder.lockedText' | transloco }}</p>
+                </div>
+              } @else {
+                <div class="section-title">
+                  <span class="section-icon flex align-items-center justify-content-center"><i [class]="icon(section.key)"></i></span>
+                  <div>
+                    <h2>{{ label(section.key) }}</h2>
+                    <p>{{ description(section.key) }}</p>
+                  </div>
+                </div>
+                <div class="clinical-data mt-4">
+                  @if (patientData(section); as patient) {
+                    <div class="data-grid grid">
+                      <div class="col-12 md:col-6 flex flex-column gap-1 p-3 border-round-lg"><small>{{ 'folder.fullName' | transloco }}</small><strong>{{ personName(patient) }}</strong></div>
+                      <div class="col-12 md:col-6 flex flex-column gap-1 p-3 border-round-lg"><small>{{ 'folder.email' | transloco }}</small><strong>{{ patient.user?.email || patient.email || ('folder.none' | transloco) }}</strong></div>
+                      <div class="col-12 md:col-6 flex flex-column gap-1 p-3 border-round-lg"><small>{{ 'folder.fiscalCode' | transloco }}</small><strong>{{ patient.fiscalCode || ('folder.protected' | transloco) }}</strong></div>
+                      <div class="col-12 md:col-6 flex flex-column gap-1 p-3 border-round-lg"><small>{{ 'folder.structure' | transloco }}</small><strong>{{ patientStructure(patient) }}</strong></div>
+                    </div>
+                  } @else if (section.key === 'appuntamenti') {
+                    @if (appointmentData(section).length) {
+                      <div class="data-list flex flex-column gap-2">
+                        @for (appointment of appointmentData(section); track appointment.id) {
+                          <article class="data-row">
+                            <span class="data-row-icon"><i class="pi pi-calendar"></i></span>
+                            <div><strong>{{ appointment.startTime | date: 'dd MMMM y · HH:mm' : 'Europe/Rome' }}</strong><small>{{ appointment.doctor.user.firstName }} {{ appointment.doctor.user.lastName }} · {{ appointment.structure.name }}</small></div>
+                            <p-tag [value]="('appointments.status.' + appointment.status) | transloco" [severity]="appointment.status === 'completed' ? 'success' : appointment.status === 'cancelled' ? 'danger' : 'info'" />
+                          </article>
+                        }
+                      </div>
+                    } @else { <div class="data-empty flex align-items-center gap-2 p-3 border-round-lg"><i class="pi pi-calendar-times"></i><p>{{ 'folder.emptyAppointments' | transloco }}</p></div> }
+                  } @else if (section.key === 'referti') {
+                    @if (reportData(section).length) {
+                      <div class="data-list flex flex-column gap-2">
+                        @for (report of reportData(section); track report.id) {
+                          <p-button
+                            type="button"
+                            styleClass="data-row data-row-button"
+                            [text]="true"
+                            fluid
+                            (onClick)="openReport(report)"
+                          >
+                            <span class="data-row-icon"><i class="pi pi-file"></i></span>
+                            <div><strong>{{ report.diagnosis || ('reports.defaultTitle' | transloco) }}</strong><small>{{ report.appointment.startTime | date: 'dd MMMM y' : 'Europe/Rome' }} · {{ report.doctor.user.firstName }} {{ report.doctor.user.lastName }}</small></div>
+                            <i class="pi pi-arrow-right"></i>
+                          </p-button>
+                        }
+                      </div>
+                    } @else { <div class="data-empty flex align-items-center gap-2 p-3 border-round-lg"><i class="pi pi-file"></i><p>{{ 'folder.emptyReports' | transloco }}</p></div> }
+                  } @else if (section.key === 'recensioni') {
+                    @if (reviewData(section).length) {
+                      <div class="data-list flex flex-column gap-2">
+                        @for (review of reviewData(section); track review.id) {
+                          <article class="data-row"><span class="data-row-icon"><i class="pi pi-star-fill"></i></span><div><strong>{{ review.doctor?.user?.firstName }} {{ review.doctor?.user?.lastName }}</strong><small>{{ review.comment || ('folder.noComment' | transloco) }}</small></div><p-tag [value]="review.rating + '/5'" severity="warn" /></article>
+                        }
+                      </div>
+                    } @else { <div class="data-empty flex align-items-center gap-2 p-3 border-round-lg"><i class="pi pi-star"></i><p>{{ 'folder.emptyReviews' | transloco }}</p></div> }
+                  } @else {
+                    <div class="clinical-note flex align-items-center gap-2 p-3 border-round-lg"><i class="pi pi-info-circle"></i><p>{{ textData(section) }}</p></div>
+                  }
+                </div>
+              }
+            </div></p-tabpanel
+          >
+        }
+      </p-tabpanels></p-tabs
+    >
+  }
+</div>

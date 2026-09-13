@@ -1,0 +1,82 @@
+<div class="page">
+  <div class="page-heading">
+    <div>
+      <span class="eyebrow">{{ greeting() }}</span>
+      <h1>{{ 'dashboard.welcome' | transloco: { name: firstName() } }}</h1>
+      <p>{{ subtitle() }}</p>
+    </div>
+    @if (auth.role() === 'patient') {
+      <p-button [label]="'booking.title' | transloco" icon="pi pi-calendar-plus" (onClick)="goDoctors()" />
+    }
+  </div>
+  <div class="stat-grid">
+    <article class="panel stat-card">
+      <span class="stat-card__icon"><i class="pi pi-calendar"></i></span><strong>{{ upcoming().length }}</strong
+      ><small>{{ 'stats.futureAppointments' | transloco }}</small>
+    </article>
+    <article class="panel stat-card">
+      <span class="stat-card__icon"><i class="pi pi-check-circle"></i></span><strong>{{ completed().length }}</strong
+      ><small>{{ 'stats.completedVisits' | transloco }}</small>
+    </article>
+    <article class="panel stat-card">
+      <span class="stat-card__icon"><i class="pi pi-file"></i></span><strong>{{ publishedReports() }}</strong
+      ><small>{{ 'stats.publishedReports' | transloco }}</small>
+    </article>
+    <article class="panel stat-card">
+      <span class="stat-card__icon"><i class="pi pi-shield"></i></span><strong>{{ accessGranted() }}</strong
+      ><small>{{ 'stats.grantedAccesses' | transloco }}</small>
+    </article>
+  </div>
+  <div class="dashboard-grid grid">
+    <section class="panel panel-body col-12 lg:col-8">
+      <div class="section-head flex align-items-end justify-content-between">
+        <div>
+          <span class="eyebrow">{{ 'dashboard.inAgenda' | transloco }}</span>
+          <h2>{{ 'dashboard.upcomingTitle' | transloco }}</h2>
+        </div>
+        <a routerLink="/app/appointments">{{ 'dashboard.viewAll' | transloco }}</a>
+      </div>
+      @if (!upcoming().length) {
+        <div class="empty-state p-4">
+          <i class="pi pi-calendar-times"></i>
+          <p>{{ 'dashboard.noUpcoming' | transloco }}</p>
+        </div>
+      } @else {
+        <div class="appointment-list">
+          @for (item of upcoming().slice(0, 4); track item.id) {
+            <article class="flex align-items-center gap-3">
+              <time class="flex flex-column align-items-center justify-content-center w-3rem h-3rem border-round-lg">
+                <strong>{{ item.startTime | date: 'dd' : 'Europe/Rome' }}</strong
+                ><span>{{ item.startTime | date: 'MMM' : 'Europe/Rome' : locale() }}</span></time
+              >
+              <div class="flex flex-column">
+                <strong>{{ counterpart(item) }}</strong
+                ><small>{{ item.doctor.specialization.name }} · {{ item.structure.name }}</small>
+              </div>
+              <span>{{ item.startTime | date: 'HH:mm' : 'Europe/Rome' }}</span>
+            </article>
+          }
+        </div>
+      }
+    </section>
+    <section class="panel panel-body col-12 lg:col-4">
+      <div class="section-head flex align-items-end justify-content-between">
+        <div>
+          <span class="eyebrow">{{ 'dashboard.quickEyebrow' | transloco }}</span>
+          <h2>{{ 'dashboard.servicesTitle' | transloco }}</h2>
+        </div>
+      </div>
+      <div class="quick-links flex flex-column gap-2">
+        @for (link of quickLinks(); track link.route) {
+          <a class="flex align-items-center gap-3 p-3 border-round-lg" [routerLink]="link.route"
+            ><i [class]="'flex align-items-center justify-content-center ' + link.icon"></i
+            ><span class="flex flex-column"
+              ><strong>{{ link.label }}</strong
+              ><small>{{ link.text }}</small></span
+            ><i class="pi pi-chevron-right flex align-items-center justify-content-center"></i
+          ></a>
+        }
+      </div>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+.agenda {
+  overflow: hidden;
+}
+.agenda-head {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1.2rem;
+  background: var(--canvas);
+  border-bottom: 1px solid var(--line);
+}
+.agenda-head span {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+.agenda article {
+  display: grid;
+  grid-template-columns: 6.5rem auto 1fr auto auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--line);
+}
+.agenda article:last-child {
+  border: 0;
+}
+.agenda time {
+  display: grid;
+}
+.agenda time span {
+  color: var(--muted);
+  font-size: 0.68rem;
+  text-transform: capitalize;
+}
+.patient {
+  display: grid;
+}
+.patient small {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+@media (max-width: 900px) {
+  .agenda article {
+    grid-template-columns: 5rem auto 1fr;
+  }
+  .agenda article p-tag,
+  .agenda article p-button {
+    grid-column: 3;
+  }
+  .agenda article p-button {
+    justify-self: start;
+  }
+}
+@media (max-width: 560px) {
+  .agenda article {
+    grid-template-columns: 4.5rem 1fr;
+  }
+  .agenda article p-avatar {
+    display: none;
+  }
+  .agenda article p-tag,
+  .agenda article p-button {
+    grid-column: 2;
+  }
+}

@@ -1,0 +1,74 @@
+<div class="page settings-page">
+  <div class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'settings.eyebrow' | transloco }}</span>
+      <h1>{{ 'settings.title' | transloco }}</h1>
+      <p>{{ 'settings.subtitle' | transloco }}</p>
+    </div>
+  </div>
+  <div class="settings-grid grid">
+    <section class="panel panel-body col-12 lg:col-6">
+      <h2>{{ 'settings.profile' | transloco }}</h2>
+      <div class="profile-card flex align-items-center gap-3">
+        <p-avatar [label]="initials()" shape="square" class="app-avatar app-avatar--large app-avatar--brand" />
+        <div class="profile-card__details flex flex-column">
+          <strong>{{ auth.user()?.firstName }} {{ auth.user()?.lastName }}</strong
+          ><small>{{ auth.user()?.email }}</small
+          ><em>{{ roleLabel() }}</em>
+        </div>
+      </div>
+      <p-message class="profile-note" severity="info" variant="simple">{{ 'settings.profileNote' | transloco }}</p-message>
+    </section>
+    <section class="panel panel-body col-12 lg:col-6">
+      <h2>{{ 'settings.appearance' | transloco }}</h2>
+      <p class="muted">{{ 'settings.preferencesLocal' | transloco }}</p>
+      <div class="field">
+        <label for="theme">{{ 'settings.theme' | transloco }}</label
+        ><p-select
+          inputId="theme"
+          [options]="themes()"
+          optionLabel="label"
+          optionValue="value"
+          [formControl]="theme"
+          (onChange)="changeTheme()"
+        />
+      </div>
+      <div class="field">
+        <label for="language">{{ 'settings.language' | transloco }}</label
+        ><p-select
+          inputId="language"
+          [options]="languages"
+          optionLabel="label"
+          optionValue="value"
+          [formControl]="language"
+          (onChange)="changeLanguage()"
+        />
+      </div>
+    </section>
+    <section class="panel panel-body password-section col-12">
+      <h2>{{ 'settings.changePassword' | transloco }}</h2>
+      <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="stack max-w-30rem">
+        <div class="field">
+          <label for="currentPassword">{{ 'settings.currentPassword' | transloco }}</label
+          ><p-password
+            inputId="currentPassword"
+            formControlName="currentPassword"
+            [feedback]="false"
+            [toggleMask]="true"
+          />
+        </div>
+        <div class="field">
+          <label for="newPassword">{{ 'settings.newPassword' | transloco }}</label
+          ><p-password inputId="newPassword" formControlName="newPassword" [toggleMask]="true" />
+        </div>
+        <p-button
+          type="submit"
+          [label]="'settings.updatePassword' | transloco"
+          icon="pi pi-lock"
+          [loading]="saving()"
+          [disabled]="passwordForm.invalid"
+        />
+      </form>
+    </section>
+  </div>
+</div>

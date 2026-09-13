@@ -1,0 +1,107 @@
+.app-layout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 17rem 1fr;
+}
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+}
+nav a,
+.drawer-nav a {
+  padding: 0.8rem 0.9rem;
+  border-radius: 0.75rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.91rem;
+}
+nav a:hover,
+nav a.active,
+.drawer-nav a.active {
+  color: var(--brand);
+  background: var(--brand-soft);
+}
+nav i {
+  width: 1.15rem;
+  text-align: center;
+}
+.sidebar-help {
+  margin-top: auto;
+  padding: 1rem;
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--brand) 10%, var(--surface));
+  color: var(--brand-strong);
+  font-size: 0.78rem;
+}
+.sidebar-help i {
+  font-size: 1.2rem;
+}
+.sidebar-help span {
+  color: var(--muted);
+}
+.workspace {
+  min-width: 0;
+}
+.app-header {
+  height: 4.75rem;
+  padding: 0 clamp(1rem, 3vw, 2.5rem);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+.header-context span,
+.profile small {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+.profile strong {
+  font-size: 0.85rem;
+}
+.workspace-content {
+  padding: var(--space-page);
+  max-width: 100rem;
+  margin: auto;
+}
+.mobile-menu,
+.header-brand {
+  display: none;
+}
+.drawer-nav {
+  margin-top: 0;
+}
+@media (max-width: 900px) {
+  .app-layout {
+    display: block;
+  }
+  .sidebar {
+    display: none !important;
+  }
+  .mobile-menu,
+  .header-brand {
+    display: inline-flex;
+  }
+  .header-brand {
+    margin-right: auto;
+    min-width: 0;
+  }
+  .header-context {
+    display: none;
+  }
+  .app-header {
+    height: 3.75rem;
+    gap: 0.45rem;
+    padding: 0 0.65rem 0 0.35rem;
+  }
+  .profile > span {
+    display: none;
+  }
+  .workspace-content {
+    padding: 1rem;
+  }
+  .workspace-content:has(.booking-page) {
+    padding-bottom: 0;
+  }
+}

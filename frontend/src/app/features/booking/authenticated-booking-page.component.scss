@@ -1,0 +1,23 @@
+.booking-filters {
+  box-shadow: var(--shadow);
+}
+
+// The global card height is useful for single-row grids, but it makes every
+// doctor card in this multi-row result grid as tall as the whole grid.
+.doctor-card.p-card {
+  height: auto;
+  align-self: flex-start;
+}
+
+@media (max-width: 680px) {
+  .page-heading h1 {
+    font-size: 1.55rem;
+  }
+  .page-heading p {
+    font-size: 0.88rem;
+  }
+  .booking-filters .p-button,
+  .booking-filters p-button {
+    width: 100%;
+  }
+}

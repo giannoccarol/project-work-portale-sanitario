@@ -1,0 +1,18 @@
+.register-page {
+  max-width: 52rem;
+}
+.register-heading h1 {
+  font-size: clamp(2.1rem, 5vw, 3.4rem);
+  margin-bottom: 0.6rem;
+}
+.register-heading p,
+.switch {
+  color: var(--muted);
+}
+.switch a {
+  font-weight: 700;
+  text-decoration: none;
+}
+.uppercase {
+  text-transform: uppercase;
+}
