@@ -1,0 +1,124 @@
+<div class="page booking-page">
+  <div class="page-heading">
+    <div>
+      <a [routerLink]="auth.authenticated() ? ['/app/booking'] : ['/doctors']" class="back inline-flex align-items-center gap-2 mb-3"><i class="pi pi-arrow-left"></i> {{ 'booking.changeDoctor' | transloco }}</a>
+      <h1>{{ 'booking.title' | transloco }}</h1>
+      <p>{{ 'booking.subtitle' | transloco }}</p>
+    </div>
+  </div>
+  @if (doctor()) {
+    <div class="booking-layout grid">
+      <section class="panel panel-body stack col-12 lg:col">
+        <div class="doctor-summary flex align-items-center gap-3">
+          <p-avatar [label]="initials()" shape="square" class="app-avatar app-avatar--large app-avatar--brand" />
+          <div class="flex flex-column">
+            <small>{{ doctor()!.specialization.name }}</small
+            ><strong>{{ 'directory.dr' | transloco }} {{ doctor()!.user.firstName }} {{ doctor()!.user.lastName }}</strong
+            ><em><i class="pi pi-building"></i>{{ doctor()!.structure.name }}</em>
+          </div>
+        </div>
+        <div class="field">
+          <label for="date">{{ 'booking.stepDay' | transloco }}</label
+          >          <p-datepicker
+            inputId="date"
+            [(ngModel)]="date"
+            [minDate]="minDate"
+            [showIcon]="true"
+            [touchUI]="touchUI()"
+            [appendTo]="touchUI() ? 'body' : undefined"
+            dateFormat="dd/mm/yy"
+            (onSelect)="loadSlots()"
+          />
+        </div>
+        <div class="field">
+          <span class="field-label">{{ 'booking.stepTime' | transloco }}</span>
+          @if (slotsLoading()) {
+            <p class="muted"><i class="pi pi-spin pi-spinner"></i> {{ 'booking.searchingSlots' | transloco }}</p>
+          } @else if (!date) {
+            <p class="hint">{{ 'booking.pickDateFirst' | transloco }}</p>
+          } @else if (!slots().length) {
+            <p class="hint">{{ 'booking.noSlots' | transloco }}</p>
+          } @else {
+            <div class="slots grid grid-nogutter">
+              @for (slot of slots(); track slot) {
+                <p-button class="col-6 sm:col-4 md:col-3"
+                  [label]="(slot | date: 'HH:mm' : 'Europe/Rome') || ''"
+                  [severity]="selectedSlot() === slot ? 'primary' : 'secondary'"
+                  [outlined]="selectedSlot() !== slot"
+                  fluid
+                  size="small"
+                  (onClick)="selectedSlot.set(slot)"
+                />
+              }
+            </div>
+          }
+        </div>
+        <div class="field">
+          <label for="reason">{{ 'booking.reason' | transloco }} <small>{{ 'common.optional' | transloco }}</small></label
+          ><textarea
+            pTextarea
+            id="reason"
+            [(ngModel)]="reason"
+            rows="4"
+            maxlength="500"
+            placeholder="{{ 'booking.reasonPlaceholder' | transloco }}"
+          ></textarea>
+        </div>
+      </section>
+      <aside class="panel panel-body summary col-12 lg:col-fixed lg:w-22rem">
+        <span class="eyebrow">{{ 'booking.summary' | transloco }}</span>
+        <h2>{{ 'booking.yourBooking' | transloco }}</h2>
+        <p class="summary-compact">
+          <strong>{{ 'directory.dr' | transloco }} {{ doctor()!.user.firstName }} {{ doctor()!.user.lastName }}</strong>
+          <span>
+            @if (selectedSlot()) {
+              {{ selectedSlot()! | date: 'EEE d MMM' : 'Europe/Rome' : locale() }}
+              · {{ selectedSlot()! | date: 'HH:mm' : 'Europe/Rome' }}
+            } @else {
+              {{ 'booking.toChoose' | transloco }}
+            }
+          </span>
+        </p>
+        <dl class="my-5">
+          <div class="flex justify-content-between gap-3 py-3">
+            <dt>{{ 'booking.doctor' | transloco }}</dt>
+            <dd>{{ doctor()!.user.firstName }} {{ doctor()!.user.lastName }}</dd>
+          </div>
+          <div class="flex justify-content-between gap-3 py-3">
+            <dt>{{ 'booking.structure' | transloco }}</dt>
+            <dd>{{ doctor()!.structure.name }}</dd>
+          </div>
+          <div class="flex justify-content-between gap-3 py-3">
+            <dt>{{ 'booking.date' | transloco }}</dt>
+            <dd>
+              {{
+                selectedSlot()
+                  ? (selectedSlot()! | date: 'EEEE d MMMM y' : 'Europe/Rome' : locale())
+                  : ('booking.toChoose' | transloco)
+              }}
+            </dd>
+          </div>
+          <div class="flex justify-content-between gap-3 py-3">
+            <dt>{{ 'booking.time' | transloco }}</dt>
+            <dd>{{ selectedSlot() ? (selectedSlot()! | date: 'HH:mm' : 'Europe/Rome') : '—' }}</dd>
+          </div>
+        </dl>
+        <p-button
+          [label]="auth.authenticated() ? ('booking.confirm' | transloco) : ('booking.loginContinue' | transloco)"
+          [icon]="auth.authenticated() ? 'pi pi-check' : 'pi pi-sign-in'"
+          [disabled]="!selectedSlot()"
+          [loading]="saving()"
+          fluid
+          (onClick)="confirm()"
+        /><small class="summary-hint block text-center mt-3 text-muted-color text-xs">{{
+          auth.authenticated() ? ('booking.confirmHint' | transloco) : ('booking.draftHint' | transloco)
+        }}</small>
+      </aside>
+    </div>
+  } @else {
+    <div class="panel empty-state">
+      <i class="pi pi-spin pi-spinner"></i>
+      <p>{{ 'booking.loadingSlots' | transloco }}</p>
+    </div>
+  }
+</div>

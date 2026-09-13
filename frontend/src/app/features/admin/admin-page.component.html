@@ -1,0 +1,238 @@
+<div class="page">
+  <div class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'admin.eyebrow' | transloco }}</span>
+      <h1>{{ 'admin.title' | transloco }}</h1>
+      <p>{{ 'admin.subtitle' | transloco }}</p>
+    </div>
+  </div>
+  <div class="stat-grid">
+    <article class="panel stat-card">
+      <span class="stat-card__icon"><i class="pi pi-building"></i></span><strong>{{ structures().length }}</strong
+      ><small>{{ 'admin.totalStructures' | transloco }}</small>
+    </article>
+    <article class="panel stat-card">
+      <span class="stat-card__icon"><i class="pi pi-tags"></i></span><strong>{{ specializations().length }}</strong
+      ><small>{{ 'admin.specializationsStat' | transloco }}</small>
+    </article>
+    <article class="panel stat-card">
+      <span class="stat-card__icon"><i class="pi pi-user-plus"></i></span><strong>{{ doctors().length }}</strong
+      ><small>{{ 'admin.doctorsCounted' | transloco }}</small>
+    </article>
+    <article class="panel stat-card">
+      <span class="stat-card__icon"><i class="pi pi-check-circle"></i></span><strong>{{ activeDoctors() }}</strong
+      ><small>{{ 'admin.doctorsActive' | transloco }}</small>
+    </article>
+  </div>
+  <p-tabs value="structures"
+    ><p-tablist
+      ><p-tab value="structures">{{ 'admin.tabStructures' | transloco }}</p-tab
+      ><p-tab value="specializations">{{ 'admin.tabSpecializations' | transloco }}</p-tab
+      ><p-tab value="doctors">{{ 'admin.tabDoctors' | transloco }}</p-tab></p-tablist
+    ><p-tabpanels>
+      <p-tabpanel value="structures"
+        ><section class="panel table-panel">
+          <div class="table-head flex flex-column md:flex-row align-items-start md:align-items-center justify-content-between gap-3 p-4">
+            <div>
+              <h2>{{ 'admin.structuresTitle' | transloco }}</h2>
+              <p>{{ 'admin.structuresText' | transloco }}</p>
+            </div>
+            <p-button [label]="'admin.newStructure' | transloco" icon="pi pi-plus" (onClick)="openDialog('structure')" />
+          </div>
+          <p-table [value]="structures()" [paginator]="structures().length > 8" [rows]="8" responsiveLayout="scroll"
+            ><ng-template #header
+              ><tr>
+                <th>{{ 'admin.name' | transloco }}</th>
+                <th>{{ 'admin.address' | transloco }}</th>
+                <th>{{ 'admin.phone' | transloco }}</th>
+                <th>{{ 'admin.status' | transloco }}</th>
+                <th></th></tr></ng-template
+            ><ng-template #body let-item
+              ><tr>
+                <td>
+                  <strong>{{ item.name }}</strong>
+                </td>
+                <td>{{ item.address }}</td>
+                <td>{{ item.phone || '—' }}</td>
+                <td>
+                  <p-tag
+                    [value]="item.isActive ? ('admin.activeF' | transloco) : ('admin.archivedF' | transloco)"
+                    [severity]="item.isActive ? 'success' : 'secondary'"
+                  />
+                </td>
+                <td class="actions">
+                  <p-button
+                    [icon]="item.isActive ? 'pi pi-archive' : 'pi pi-refresh'"
+                    [text]="true"
+                    [rounded]="true"
+                    severity="secondary"
+                    [ariaLabel]="item.isActive ? ('admin.archive' | transloco) : ('admin.reactivate' | transloco)"
+                    (onClick)="toggleStructure(item)"
+                  />
+                </td></tr></ng-template
+          ></p-table></section
+      ></p-tabpanel>
+      <p-tabpanel value="specializations"
+        ><section class="panel table-panel">
+          <div class="table-head flex flex-column md:flex-row align-items-start md:align-items-center justify-content-between gap-3 p-4">
+            <div>
+              <h2>{{ 'admin.specializationsTitle' | transloco }}</h2>
+              <p>{{ 'admin.specializationsText' | transloco }}</p>
+            </div>
+            <p-button
+              [label]="'admin.newSpecialization' | transloco"
+              icon="pi pi-plus"
+              (onClick)="openDialog('specialization')"
+            />
+          </div>
+          <p-table
+            [value]="specializations()"
+            [paginator]="specializations().length > 8"
+            [rows]="8"
+            responsiveLayout="scroll"
+            ><ng-template #header
+              ><tr>
+                <th>{{ 'admin.name' | transloco }}</th>
+                <th>{{ 'admin.structureColumn' | transloco }}</th>
+                <th>{{ 'admin.description' | transloco }}</th>
+                <th>{{ 'admin.status' | transloco }}</th>
+                <th></th></tr></ng-template
+            ><ng-template #body let-item
+              ><tr>
+                <td>
+                  <strong>{{ item.name }}</strong>
+                </td>
+                <td>{{ item.structure?.name || '—' }}</td>
+                <td>{{ item.description || '—' }}</td>
+                <td>
+                  <p-tag
+                    [value]="item.isActive ? ('admin.activeF' | transloco) : ('admin.archivedF' | transloco)"
+                    [severity]="item.isActive ? 'success' : 'secondary'"
+                  />
+                </td>
+                <td class="actions">
+                  <p-button
+                    [icon]="item.isActive ? 'pi pi-archive' : 'pi pi-refresh'"
+                    [text]="true"
+                    [rounded]="true"
+                    severity="secondary"
+                    (onClick)="toggleSpecialization(item)"
+                  />
+                </td></tr></ng-template
+          ></p-table></section
+      ></p-tabpanel>
+      <p-tabpanel value="doctors"
+        ><section class="panel table-panel">
+          <div class="table-head flex flex-column md:flex-row align-items-start md:align-items-center justify-content-between gap-3 p-4">
+            <div>
+              <h2>{{ 'admin.doctorsTitle' | transloco }}</h2>
+              <p>{{ 'admin.doctorsText' | transloco }}</p>
+            </div>
+            <p-button [label]="'admin.newDoctor' | transloco" icon="pi pi-user-plus" (onClick)="openDialog('doctor')" />
+          </div>
+          <p-table [value]="doctors()" [paginator]="doctors().length > 8" [rows]="8" responsiveLayout="scroll"
+            ><ng-template #header
+              ><tr>
+                <th>{{ 'admin.doctorColumn' | transloco }}</th>
+                <th>{{ 'admin.specializationColumn' | transloco }}</th>
+                <th>{{ 'admin.structureColumn' | transloco }}</th>
+                <th>{{ 'admin.status' | transloco }}</th>
+                <th></th></tr></ng-template
+            ><ng-template #body let-item
+              ><tr>
+                <td>
+                  <strong>{{ item.user.firstName }} {{ item.user.lastName }}</strong
+                  ><small>{{ item.user.email }}</small>
+                </td>
+                <td>{{ item.specialization.name }}</td>
+                <td>{{ item.structure.name }}</td>
+                <td>
+                  <p-tag
+                    [value]="item.isActive ? ('admin.activeM' | transloco) : ('admin.archivedM' | transloco)"
+                    [severity]="item.isActive ? 'success' : 'secondary'"
+                  />
+                </td>
+                <td class="actions">
+                  <p-button
+                    [icon]="item.isActive ? 'pi pi-archive' : 'pi pi-refresh'"
+                    [text]="true"
+                    [rounded]="true"
+                    severity="secondary"
+                    (onClick)="toggleDoctor(item)"
+                  />
+                </td></tr></ng-template
+          ></p-table></section
+      ></p-tabpanel> </p-tabpanels
+  ></p-tabs>
+</div>
+<p-dialog [header]="dialogTitle() | transloco" [(visible)]="dialogOpen" [modal]="true" [style]="{ width: 'min(38rem,95vw)' }">
+  @if (dialogType() === 'structure') {
+    <div class="stack">
+      <div class="field"><label for="structure-name">{{ 'admin.name' | transloco }}</label><input pInputText id="structure-name" [(ngModel)]="structureDraft.name" /></div>
+      <div class="field"><label for="structure-address">{{ 'admin.address' | transloco }}</label><input pInputText id="structure-address" [(ngModel)]="structureDraft.address" /></div>
+      <div class="field"><label for="structure-phone">{{ 'admin.phone' | transloco }}</label><input pInputText id="structure-phone" [(ngModel)]="structureDraft.phone" /></div>
+    </div>
+  }
+  @if (dialogType() === 'specialization') {
+    <div class="stack">
+      <div class="field">
+        <label for="specialization-structure">{{ 'admin.structureColumn' | transloco }}</label
+        ><p-select
+          inputId="specialization-structure"
+          [options]="activeStructures()"
+          optionLabel="name"
+          optionValue="id"
+          [(ngModel)]="specializationDraft.structureId"
+          [placeholder]="'common.selectStructure' | transloco"
+        />
+      </div>
+      <div class="field"><label for="specialization-name">{{ 'admin.name' | transloco }}</label><input pInputText id="specialization-name" [(ngModel)]="specializationDraft.name" /></div>
+      <div class="field">
+        <label for="specialization-description">{{ 'admin.description' | transloco }}</label><textarea pTextarea id="specialization-description" [(ngModel)]="specializationDraft.description" rows="4"></textarea>
+      </div>
+    </div>
+  }
+  @if (dialogType() === 'doctor') {
+    <div class="form-grid">
+      <div class="field"><label for="doctor-first-name">{{ 'form.firstName' | transloco }}</label><input pInputText id="doctor-first-name" [(ngModel)]="doctorDraft.firstName" /></div>
+      <div class="field"><label for="doctor-last-name">{{ 'form.lastName' | transloco }}</label><input pInputText id="doctor-last-name" [(ngModel)]="doctorDraft.lastName" /></div>
+      <div class="field full">
+        <label for="doctor-email">{{ 'common.email' | transloco }}</label><input pInputText id="doctor-email" type="email" [(ngModel)]="doctorDraft.email" />
+      </div>
+      <div class="field full">
+        <label for="doctor-password">{{ 'admin.initialPassword' | transloco }}</label><input pInputText id="doctor-password" type="password" [(ngModel)]="doctorDraft.password" />
+      </div>
+      <div class="field">
+        <label for="doctor-structure">{{ 'admin.structureColumn' | transloco }}</label
+        ><p-select
+          inputId="doctor-structure"
+          [options]="activeStructures()"
+          optionLabel="name"
+          optionValue="id"
+          [(ngModel)]="doctorDraft.structureId"
+          (onChange)="doctorDraft.specializationId = ''"
+        />
+      </div>
+      <div class="field">
+        <label for="doctor-specialization">{{ 'admin.specializationColumn' | transloco }}</label
+        ><p-select
+          inputId="doctor-specialization"
+          [options]="doctorSpecializations()"
+          optionLabel="name"
+          optionValue="id"
+          [(ngModel)]="doctorDraft.specializationId"
+        />
+      </div>
+      <div class="field full">
+        <label for="doctor-bio">{{ 'admin.bio' | transloco }}</label><textarea pTextarea id="doctor-bio" [(ngModel)]="doctorDraft.bio" rows="3"></textarea>
+      </div>
+    </div>
+  }
+  <ng-template #footer
+    ><p-button [label]="'common.cancel' | transloco" [text]="true" severity="secondary" (onClick)="dialogOpen = false" /><p-button
+      [label]="'common.save' | transloco"
+      icon="pi pi-save"
+      [loading]="saving()"
+      (onClick)="save()"
+  /></ng-template>
+</p-dialog>

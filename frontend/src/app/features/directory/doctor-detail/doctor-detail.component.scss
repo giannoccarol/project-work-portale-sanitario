@@ -1,0 +1,132 @@
+.detail-page {
+  padding-block: var(--space-page);
+}
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.84rem;
+}
+.profile-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 21rem;
+  gap: 1.2rem;
+  align-items: start;
+}
+.profile-main {
+  padding: var(--space-card);
+}
+.profile-head {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+.profile-head h1 {
+  margin: 0.25rem 0;
+  font-size: clamp(1.7rem, 4vw, 2.5rem);
+}
+.profile-head > div > strong {
+  color: var(--brand);
+}
+section {
+  padding-top: 1.8rem;
+}
+section h2 {
+  font-size: 1.05rem;
+}
+.structure {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 0.8rem;
+  background: var(--canvas);
+}
+.structure > i {
+  color: var(--brand);
+  font-size: 1.3rem;
+}
+.structure span {
+  display: grid;
+}
+.structure small {
+  color: var(--muted);
+}
+.booking-card {
+  position: sticky;
+  top: 6.25rem;
+  padding: var(--space-card);
+}
+.booking-card p,
+.booking-card small {
+  color: var(--muted);
+}
+.booking-card ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+  margin: 1.4rem 0;
+}
+.booking-card li {
+  font-size: 0.82rem;
+}
+.booking-card li i {
+  color: var(--success);
+  margin-right: 0.5rem;
+}
+.booking-card small {
+  display: block;
+  text-align: center;
+  margin-top: 0.8rem;
+  font-size: 0.68rem;
+}
+.reviews-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.reviews-title span {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+.review-list {
+  display: grid;
+  gap: 0.75rem;
+}
+.review-list article {
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+}
+.review-list article > div {
+  display: flex;
+  justify-content: space-between;
+}
+.review-list p {
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+@media (max-width: 800px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+  .booking-card {
+    position: static;
+    order: -1;
+  }
+  .profile-head {
+    align-items: flex-start;
+  }
+  .profile-head p-avatar {
+    width: 4rem;
+    height: 4rem;
+  }
+}

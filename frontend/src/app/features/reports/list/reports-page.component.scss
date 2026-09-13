@@ -1,0 +1,41 @@
+.report-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.report-icon {
+  display: grid;
+  place-items: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 0.8rem;
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+.report-card small {
+  margin-top: 1rem;
+  color: var(--muted);
+}
+.report-card h2 {
+  font-size: 1.05rem;
+  margin: 0.3rem 0;
+}
+.report-card p {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+.report-card dl {
+  margin: 1rem 0 0;
+}
+.report-card dl div {
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--line);
+}
+.report-card dt {
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+.report-card dd {
+  margin: 0;
+  font-size: 0.78rem;
+}

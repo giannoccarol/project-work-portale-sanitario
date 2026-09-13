@@ -1,0 +1,9 @@
+<a routerLink="/" class="brand" [attr.aria-label]="'app.homeAria' | transloco">
+  <span class="brand__mark" aria-hidden="true"><i class="pi pi-heart-fill"></i></span>
+  <span
+    ><strong>{{ 'app.name' | transloco }}</strong>
+    @if (showSubtitle()) {
+      <small>{{ 'app.brandSubtitle' | transloco }}</small>
+    }
+  </span>
+</a>

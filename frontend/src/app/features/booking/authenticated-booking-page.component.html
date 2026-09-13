@@ -1,0 +1,89 @@
+<div class="page authenticated-booking-page">
+  <div class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'booking.title' | transloco }}</span>
+      <h1>{{ 'booking.loggedTitle' | transloco }}</h1>
+      <p>{{ 'booking.loggedSubtitle' | transloco }}</p>
+    </div>
+  </div>
+
+  <div class="panel panel-body booking-filters grid align-items-end">
+    <div class="field col-12 md:col-5">
+      <label for="booking-structure">{{ 'directory.structure' | transloco }}</label>
+      <p-select
+        inputId="booking-structure"
+        [options]="structures()"
+        optionLabel="name"
+        optionValue="id"
+        [placeholder]="'directory.allStructures' | transloco"
+        [showClear]="true"
+        [(ngModel)]="structureId"
+        (onChange)="onStructureChange()"
+      />
+    </div>
+    <div class="field col-12 md:col-5">
+      <label for="booking-specialization">{{ 'directory.specialization' | transloco }}</label>
+      <p-select
+        inputId="booking-specialization"
+        [options]="specializations()"
+        optionLabel="name"
+        optionValue="id"
+        [placeholder]="'directory.allSpecializations' | transloco"
+        [showClear]="true"
+        [(ngModel)]="specializationId"
+        (onChange)="loadDoctors()"
+      />
+    </div>
+    <p-button class="col-12 md:col-2"
+      [label]="'directory.resetFilters' | transloco"
+      icon="pi pi-filter-slash"
+      [outlined]="true"
+      severity="secondary"
+      (onClick)="resetFilters()"
+    />
+  </div>
+
+  @if (loading()) {
+    <div class="grid">
+      @for (_ of [1, 2, 3]; track $index) {
+        <div class="panel panel-body stack col-12 sm:col-6 lg:col-4">
+          <p-skeleton shape="circle" size="4rem" /><p-skeleton width="70%" /><p-skeleton width="45%" /><p-skeleton height="4rem" /><p-skeleton height="2.5rem" />
+        </div>
+      }
+    </div>
+  } @else if (error()) {
+    <p-message severity="error">{{ error() }}</p-message>
+  } @else if (!doctors().length) {
+    <div class="panel empty-state">
+      <i class="pi pi-search"></i>
+      <h2>{{ 'directory.emptyTitle' | transloco }}</h2>
+      <p>{{ 'directory.emptyText' | transloco }}</p>
+    </div>
+  } @else {
+    <div class="results-head py-3 px-1">
+      <strong>{{ 'directory.resultsCount' | transloco: { count: doctors().length } }}</strong>
+    </div>
+    <div class="grid">
+      @for (doctor of doctors(); track doctor.id) {
+        <p-card class="doctor-card col-12 sm:col-6 lg:col-4">
+          <div class="doctor-head">
+            <p-avatar [label]="initials(doctor)" shape="square" class="app-avatar app-avatar--large app-avatar--soft" />
+            <div>
+              <span class="availability"><i class="status-dot"></i> {{ 'directory.available' | transloco }}</span>
+              <h2>{{ 'directory.dr' | transloco }} {{ doctor.user.firstName }} {{ doctor.user.lastName }}</h2>
+              <strong>{{ doctor.specialization.name }}</strong>
+            </div>
+          </div>
+          <p class="bio">{{ doctor.bio || ('directory.defaultBio' | transloco) }}</p>
+          <div class="doctor-meta">
+            <span><i class="pi pi-building"></i>{{ doctor.structure.name }}</span>
+            <span><i class="pi pi-map-marker"></i>{{ doctor.structure.address }}</span>
+          </div>
+          <div class="doctor-actions doctor-actions--single">
+            <p-button [label]="'directory.book' | transloco" icon="pi pi-calendar-plus" (onClick)="book(doctor)" />
+          </div>
+        </p-card>
+      }
+    </div>
+  }
+</div>

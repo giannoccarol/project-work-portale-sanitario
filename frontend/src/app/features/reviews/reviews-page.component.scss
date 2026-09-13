@@ -1,0 +1,47 @@
+.pending h2,
+.history-head h2 {
+  font-size: 1.15rem;
+  margin: 0;
+}
+.pending > div:first-child p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+.pending-list article {
+  border-top: 1px solid var(--line);
+}
+.pending-list article > div { flex: 1; min-width: 0; }
+.pending-list small,
+.selected-doctor small {
+  color: var(--muted);
+}
+.history-head span {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.review-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.review-card h3 {
+  font-size: 0.95rem;
+  margin: 1rem 0 0.1rem;
+}
+.review-card small {
+  color: var(--muted);
+}
+.review-card p {
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+.selected-doctor {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+.rating-field {
+  justify-items: center;
+  padding-block: 0.5rem;
+}

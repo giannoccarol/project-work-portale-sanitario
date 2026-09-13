@@ -1,0 +1,64 @@
+<section class="auth-page grid m-0">
+  <div class="auth-copy col-12 md:col-6 hidden md:flex flex-column justify-content-center p-5 md:p-7">
+    <span class="eyebrow">{{ 'login.welcomeBack' | transloco }}</span>
+    <h1>{{ 'login.title1' | transloco }}<br />{{ 'login.title2' | transloco }}</h1>
+    <p>{{ 'login.intro' | transloco }}</p>
+    <div class="privacy-note flex gap-3 align-items-center mt-6">
+      <i class="pi pi-shield flex align-items-center justify-content-center w-3rem h-3rem border-round-xl bg-white text-primary"></i
+      ><span
+        class="flex flex-column"
+        ><strong>{{ 'login.secureTitle' | transloco }}</strong
+        ><small class="text-muted-color">{{ 'login.secureText' | transloco }}</small></span
+      >
+    </div>
+  </div>
+  <div class="col-12 md:col-6 flex align-items-center justify-content-center">
+    <div class="auth-panel panel w-full p-4 md:p-5">
+    <div>
+      <h2>{{ 'login.panelTitle' | transloco }}</h2>
+      <p class="text-muted-color">{{ 'login.panelText' | transloco }}</p>
+    </div>
+    @if (expired()) {
+      <p-message severity="warn">{{ 'login.sessionExpired' | transloco }}</p-message>
+    }
+    @if (error()) {
+      <p-message severity="error">{{ error() }}</p-message>
+    }
+    <form [formGroup]="form" (ngSubmit)="submit()" class="stack my-5" novalidate>
+      <div class="field">
+        <label for="email">{{ 'common.email' | transloco }}</label
+        ><input
+          pInputText
+          id="email"
+          type="email"
+          formControlName="email"
+          autocomplete="email"
+          placeholder="{{ 'login.emailPlaceholder' | transloco }}"
+        />
+        @if (invalid('email')) {
+          <small class="field-error">{{ 'validation.email' | transloco }}</small>
+        }
+      </div>
+      <div class="field">
+        <label for="password">{{ 'common.password' | transloco }}</label
+        ><p-password
+          inputId="password"
+          formControlName="password"
+          [feedback]="false"
+          [toggleMask]="true"
+          autocomplete="current-password"
+          placeholder="{{ 'login.passwordPlaceholder' | transloco }}"
+        />
+        @if (invalid('password')) {
+          <small class="field-error">{{ 'validation.passwordRequired' | transloco }}</small>
+        }
+      </div>
+      <p-button type="submit" [label]="'login.submit' | transloco" icon="pi pi-sign-in" [loading]="loading()" fluid />
+    </form>
+    <p class="auth-switch text-center mb-0 text-sm text-muted-color">
+      {{ 'login.noAccount' | transloco }}
+      <a routerLink="/register" [queryParams]="{ returnUrl: returnUrl }">{{ 'login.registerNow' | transloco }}</a>
+    </p>
+    </div>
+  </div>
+</section>

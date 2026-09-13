@@ -1,0 +1,131 @@
+<div class="page">
+  <div class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'reports.eyebrow' | transloco }}</span>
+      <h1>{{ 'reports.title' | transloco }}</h1>
+      <p>
+        {{
+          auth.role() === 'doctor'
+            ? ('reports.subtitleDoctor' | transloco)
+            : ('reports.subtitlePatient' | transloco)
+        }}
+      </p>
+    </div>
+    @if (auth.role() === 'doctor') {
+      <p-button [label]="'reports.newReport' | transloco" icon="pi pi-plus" (onClick)="openNew()" />
+    }
+  </div>
+  @if (loading()) {
+    <div class="panel empty-state">
+      <i class="pi pi-spin pi-spinner"></i>
+      <p>{{ 'reports.loading' | transloco }}</p>
+    </div>
+  } @else if (!reports().length) {
+    <div class="panel empty-state">
+      <i class="pi pi-file"></i>
+      <h2>{{ 'reports.emptyTitle' | transloco }}</h2>
+      <p>{{ 'reports.emptyText' | transloco }}</p>
+    </div>
+  } @else {
+    <div class="grid">
+      @for (report of reports(); track report.id) {
+        <p-card class="report-card col-12 sm:col-6 lg:col-4">
+          <div class="report-top">
+            <span class="report-icon"><i class="pi pi-file"></i></span
+            ><p-tag
+              [value]="report.status === 'published' ? ('reports.published' | transloco) : ('reports.draft' | transloco)"
+              [severity]="report.status === 'published' ? 'success' : 'warn'"
+            />
+          </div>
+          <small>{{
+            'reports.visitOf' | transloco: { date: (report.appointment.startTime | date: 'dd MMMM y' : 'Europe/Rome' : locale()) }
+          }}</small>
+          <h2>{{ report.diagnosis || ('reports.defaultTitle' | transloco) }}</h2>
+          <p>{{ counterpart(report) }}</p>
+          <dl>
+            <div>
+              <dt>{{ 'reports.prescriptions' | transloco }}</dt>
+              <dd>{{ report.prescriptions || ('reports.none' | transloco) }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'reports.updated' | transloco }}</dt>
+              <dd>{{ report.updatedAt | date: 'dd/MM/y HH:mm' : 'Europe/Rome' }}</dd>
+            </div>
+          </dl>
+          <div class="report-actions">
+            <p-button
+              [label]="'reports.detail' | transloco"
+              icon="pi pi-eye"
+              [outlined]="true"
+              size="small"
+              (onClick)="openDetail(report)"
+            />
+            @if (report.hasAttachment && report.status === 'published') {
+              <p-button
+                [label]="'reports.download' | transloco"
+                icon="pi pi-download"
+                [outlined]="true"
+                size="small"
+                (onClick)="download(report)"
+              />
+            }
+            @if (auth.role() === 'doctor' && report.status === 'draft') {
+              <p-button [label]="'reports.publish' | transloco" icon="pi pi-send" size="small" (onClick)="publish(report)" />
+            }
+          </div>
+        </p-card>
+      }
+    </div>
+  }
+</div>
+<p-dialog [header]="'reports.dialogTitle' | transloco" [(visible)]="dialogOpen" [modal]="true" [style]="{ width: 'min(42rem, 95vw)' }">
+  <div class="stack">
+    <div class="field">
+      <label for="appointment">{{ 'reports.appointment' | transloco }}</label>
+      <p-select
+        inputId="appointment"
+        [options]="reportableAppointments()"
+        optionValue="id"
+        [(ngModel)]="draft.appointmentId"
+        [placeholder]="'reports.selectVisit' | transloco"
+      >
+        <ng-template #item let-appointment>
+          {{ patientName(appointment) }} · {{ appointment.startTime | date: 'dd/MM/y HH:mm' : 'Europe/Rome' }}
+        </ng-template>
+        <ng-template #selectedItem let-appointment>
+          {{ patientName(appointment) }} · {{ appointment.startTime | date: 'dd/MM/y HH:mm' : 'Europe/Rome' }}
+        </ng-template>
+      </p-select>
+    </div>
+    <div class="field">
+      <label for="diagnosis">{{ 'reports.diagnosis' | transloco }}</label
+      ><textarea pTextarea id="diagnosis" [(ngModel)]="draft.diagnosis" rows="3"></textarea>
+    </div>
+    <div class="field">
+      <label for="prescriptions">{{ 'reports.prescriptions' | transloco }}</label
+      ><textarea pTextarea id="prescriptions" [(ngModel)]="draft.prescriptions" rows="3"></textarea>
+    </div>
+    <div class="field">
+      <label for="notes">{{ 'reports.notes' | transloco }}</label
+      ><textarea pTextarea id="notes" [(ngModel)]="draft.notes" rows="3"></textarea>
+    </div>
+    <div class="field">
+      <span class="field-label">{{ 'reports.attachment' | transloco }}</span
+      ><p-fileupload
+        mode="basic"
+        [chooseLabel]="'reports.attachment' | transloco"
+        chooseIcon="pi pi-upload"
+        accept="application/pdf,.pdf"
+        (onSelect)="setFile($event)"
+      />
+    </div>
+  </div>
+  <ng-template #footer
+    ><p-button [label]="'common.cancel' | transloco" [text]="true" severity="secondary" (onClick)="dialogOpen = false" /><p-button
+      [label]="'reports.saveDraft' | transloco"
+      icon="pi pi-save"
+      [loading]="saving()"
+      [disabled]="!draft.appointmentId || !draft.diagnosis"
+      (onClick)="saveDraft()"
+  /></ng-template>
+</p-dialog>

@@ -1,0 +1,9 @@
+.report-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; padding: var(--space-card); }
+.report-meta div { display: grid; gap: .25rem; }
+.report-meta small, .field-label { color: var(--muted); font-size: .72rem; }
+.report-form, .report-content { margin-top: 1rem; padding: var(--space-card); display: grid; gap: 1.2rem; }
+.report-content > div { padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
+.report-content > div:last-child { border-bottom: 0; padding-bottom: 0; }
+.report-content p { white-space: pre-wrap; line-height: 1.6; margin: .35rem 0 0; }
+.bottom-actions { margin-top: 1rem; }
+@media (max-width: 650px) { .report-meta { grid-template-columns: 1fr; } .report-actions .p-button { width: 100%; } }

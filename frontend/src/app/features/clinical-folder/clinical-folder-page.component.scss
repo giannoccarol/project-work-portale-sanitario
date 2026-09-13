@@ -1,0 +1,70 @@
+.folder-page {
+  width: 100%;
+}
+.security {
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.6rem;
+  background: color-mix(in srgb, var(--success) 14%, var(--surface));
+  color: var(--success);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.patient-banner {
+}
+.patient-banner small {
+  color: var(--muted);
+}
+.patient-banner h2 {
+  margin: 0.1rem 0;
+  font-size: 1.15rem;
+}
+.patient-banner p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+.structure {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+.structure i {
+  color: var(--brand);
+}
+.folder-tabs {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--surface);
+}
+.folder-tabs p-tab {
+  gap: 0.35rem;
+}
+.tab-lock {
+  font-size: 0.65rem;
+  margin-left: 0.4rem;
+}
+.section-panel {
+  min-height: 18rem;
+  background: transparent;
+}
+.section-icon {
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 0.8rem;
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+.clinical-data {
+}
+.data-grid > div { background: var(--canvas); }
+.data-grid small { color: var(--muted); font-size: .72rem; }
+.data-empty, .clinical-note { background: var(--canvas); color: var(--muted); }
+.data-empty p, .clinical-note p { margin: 0; }
+.clinical-note { color: var(--ink); }
+.clinical-note i { color: var(--brand); }
+@media (max-width: 650px) {
+  .security {
+    display: none;
+  }
+}

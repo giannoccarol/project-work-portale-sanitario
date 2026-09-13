@@ -1,0 +1,72 @@
+.section-head {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1rem;
+}
+.section-head h2 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+.section-head a {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.appointment-list {
+  display: grid;
+}
+.appointment-list article {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.appointment-list article:last-child {
+  border: 0;
+}
+.appointment-list time {
+  background: var(--brand-soft);
+  color: var(--brand);
+  line-height: 1;
+}
+.appointment-list time span {
+  text-transform: uppercase;
+  font-size: 0.63rem;
+}
+.appointment-list article > div {
+  min-width: 0;
+}
+.appointment-list small {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+.appointment-list article > span {
+  font-weight: 800;
+}
+.quick-links a {
+  border-radius: 0.8rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+.quick-links a:hover {
+  background: var(--canvas);
+}
+.quick-links a > i:first-child {
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.7rem;
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+.quick-links span {
+  flex: 1;
+}
+.quick-links small {
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+.quick-links .pi-chevron-right {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--muted);
+  font-size: 0.7rem;
+}

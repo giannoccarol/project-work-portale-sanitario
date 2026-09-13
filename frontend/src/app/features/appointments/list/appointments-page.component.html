@@ -1,0 +1,92 @@
+<div class="page">
+  <div class="page-heading">
+    <div>
+      <span class="eyebrow">{{ 'appointments.eyebrow' | transloco }}</span>
+      <h1>{{ 'nav.appointments' | transloco }}</h1>
+      <p>{{ 'appointments.subtitle' | transloco }}</p>
+    </div>
+    @if (auth.role() === 'patient') {
+      <p-button [label]="'appointments.newBooking' | transloco" icon="pi pi-plus" (onClick)="goDoctors()" />
+    }
+  </div>
+  <div class="panel panel-body toolbar flex flex-column md:flex-row align-items-stretch md:align-items-center justify-content-between gap-3">
+    <strong>{{ 'appointments.count' | transloco: { count: filtered().length } }}</strong
+    ><p-select
+      styleClass="w-full md:w-14rem"
+      [options]="statusOptions()"
+      optionLabel="label"
+      optionValue="value"
+      [(ngModel)]="statusFilter"
+      [placeholder]="'appointments.allStatuses' | transloco"
+      [showClear]="true"
+    />
+  </div>
+  @if (loading()) {
+    <div class="panel empty-state">
+      <i class="pi pi-spin pi-spinner"></i>
+      <p>{{ 'appointments.loading' | transloco }}</p>
+    </div>
+  } @else if (!filtered().length) {
+    <div class="panel empty-state">
+      <i class="pi pi-calendar-times"></i>
+      <h2>{{ 'appointments.emptyTitle' | transloco }}</h2>
+      <p>{{ 'appointments.emptyText' | transloco }}</p>
+    </div>
+  } @else {
+    <div class="stack">
+      @for (item of filtered(); track item.id) {
+        <article class="panel appointment-row">
+          <time
+            ><strong>{{ item.startTime | date: 'dd' : 'Europe/Rome' }}</strong
+            ><span>{{ item.startTime | date: 'MMM y' : 'Europe/Rome' : locale() }}</span
+            ><em>{{ item.startTime | date: 'HH:mm' : 'Europe/Rome' }}</em></time
+          >
+          <div class="appointment-info">
+            <p-tag [value]="statusLabel(item.status)" [severity]="statusSeverity(item.status)" />
+            <h2>{{ counterpart(item) }}</h2>
+            <p>{{ item.doctor.specialization.name }} · {{ item.structure.name }}</p>
+            @if (item.reason) {
+              <small><i class="pi pi-comment"></i>{{ item.reason }}</small>
+            }
+          </div>
+          <div class="appointment-actions">
+            <p-button
+              [label]="'appointments.openDetail' | transloco"
+              icon="pi pi-eye"
+              [outlined]="true"
+              size="small"
+              (onClick)="openDetail(item)"
+            />
+            @if (auth.role() === 'patient' && item.status === 'booked') {
+              <div class="access-toggle flex align-items-center gap-2"
+                ><p-checkbox
+                  [inputId]="'share-' + item.id"
+                  [binary]="true"
+                  [ngModel]="item.clinicalDataAccessGranted"
+                  (onChange)="toggleAccess(item, $event)"
+                /><label [for]="'share-' + item.id">{{ 'appointments.shareClinical' | transloco }}</label></div
+              ><p-button
+                [label]="'common.cancel' | transloco"
+                icon="pi pi-times"
+                severity="danger"
+                [outlined]="true"
+                size="small"
+                (onClick)="cancel(item)"
+              />
+            }
+            @if (auth.role() === 'doctor') {
+              <p-button
+                [label]="'appointments.openFolder' | transloco"
+                icon="pi pi-folder-open"
+                [disabled]="!item.clinicalDataAccessGranted"
+                [outlined]="true"
+                size="small"
+                (onClick)="openFolder(item)"
+              />
+            }
+          </div>
+        </article>
+      }
+    </div>
+  }
+</div>

@@ -1,0 +1,31 @@
+# Dependencies and build output
+**/node_modules/
+**/dist/
+**/.angular/
+**/coverage/
+**/out-tsc/
+
+# Runtime data and local uploads
+backend/data/*.sqlite
+backend/data/*.sqlite-journal
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Logs and local environment files
+*.log
+*.err
+*.tsbuildinfo
+backend/dev.out
+**/.env
+**/.env.*
+!**/.env.example
+frontend/ng.out
+
+# Thesis and local QA artifacts
+docs/relazione.md
+1759995480.docx
+*-tesi*.docx
+*.pdf
+~$*.docx
+*-render/
+thesis-render/

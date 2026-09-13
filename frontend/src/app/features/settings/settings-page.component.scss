@@ -1,0 +1,39 @@
+.settings-page {
+  width: 100%;
+}
+.settings-grid h2 {
+  font-size: 1.1rem;
+}
+.profile-card {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--brand) 7%, var(--surface));
+}
+.profile-card__details {
+  min-width: 0;
+  gap: 0.2rem;
+}
+.profile-card__details strong {
+  font-size: 1.05rem;
+}
+.profile-card small {
+  color: var(--muted);
+  font-size: 0.78rem;
+  overflow-wrap: anywhere;
+}
+.profile-card em {
+  align-self: flex-start;
+  margin-top: 0.25rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: var(--brand-soft);
+  color: var(--brand-strong);
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 700;
+}
+.profile-note {
+  display: block;
+}

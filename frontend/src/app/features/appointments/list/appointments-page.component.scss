@@ -1,0 +1,62 @@
+.appointment-row {
+  display: grid;
+  grid-template-columns: 6rem 1fr auto;
+  gap: 1.25rem;
+  padding: 1.2rem;
+  align-items: center;
+}
+.appointment-row time {
+  display: grid;
+  place-items: center;
+  padding: 0.8rem;
+  border-right: 1px solid var(--line);
+  line-height: 1.1;
+}
+.appointment-row time strong {
+  font-size: 1.8rem;
+  color: var(--brand);
+}
+.appointment-row time span {
+  text-transform: uppercase;
+  color: var(--muted);
+  font-size: 0.65rem;
+}
+.appointment-row time em {
+  margin-top: 0.5rem;
+  font-style: normal;
+  font-weight: 800;
+}
+.appointment-info h2 {
+  font-size: 1.05rem;
+  margin: 0.45rem 0 0.2rem;
+}
+.appointment-info p,
+.appointment-info small {
+  color: var(--muted);
+  margin: 0;
+  font-size: 0.78rem;
+}
+.appointment-info small {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.45rem;
+}
+.appointment-actions {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.access-toggle {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+@media (max-width: 700px) {
+  .appointment-row {
+    grid-template-columns: 4.5rem 1fr;
+  }
+  .appointment-actions {
+    grid-column: 1/-1;
+    align-items: stretch;
+  }
+}

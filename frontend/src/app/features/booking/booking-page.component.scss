@@ -1,0 +1,113 @@
+.booking-page {
+  max-width: 75rem;
+  margin: auto;
+}
+.back {
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.doctor-summary {
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--line);
+}
+.doctor-summary small {
+  color: var(--brand);
+  font-weight: 700;
+}
+.doctor-summary em {
+  font-size: 0.74rem;
+  color: var(--muted);
+  font-style: normal;
+}
+.doctor-summary em i {
+  margin-right: 0.35rem;
+}
+.hint {
+  padding: 1rem;
+  border-radius: 0.7rem;
+  background: var(--canvas);
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+.summary {
+  position: sticky;
+  top: 6rem;
+}
+.summary-compact {
+  display: none;
+}
+.summary dl div {
+  border-bottom: 1px solid var(--line);
+}
+.summary dt {
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+.summary dd {
+  margin: 0;
+  text-align: right;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+@media (max-width: 780px) {
+  .booking-page {
+    padding-inline: 1rem;
+    padding-bottom: 7.75rem;
+  }
+  :host-context(.workspace-content) .booking-page {
+    padding-inline: 0;
+  }
+  .page-heading h1 {
+    font-size: 1.55rem;
+  }
+  .page-heading p {
+    font-size: 0.88rem;
+  }
+  .doctor-summary {
+    align-items: flex-start;
+  }
+  .doctor-summary em {
+    overflow-wrap: anywhere;
+  }
+  .slots {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+  .slots > p-button {
+    flex: none;
+    width: 100%;
+    padding: 0;
+  }
+  textarea {
+    min-height: 5.5rem;
+  }
+  .summary {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    z-index: 20;
+    margin: 0;
+    border-radius: 1.15rem 1.15rem 0 0;
+    box-shadow: var(--shadow);
+    padding-bottom: calc(0.9rem + env(safe-area-inset-bottom, 0px));
+  }
+  .summary .eyebrow,
+  .summary h2,
+  .summary dl,
+  .summary .summary-hint {
+    display: none;
+  }
+  .summary-compact {
+    display: grid;
+    gap: 0.15rem;
+    margin: 0 0 0.85rem;
+  }
+  .summary-compact span {
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+}

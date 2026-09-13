@@ -1,0 +1,97 @@
+<section class="register-page container py-7">
+  <div class="register-heading text-center mb-5">
+    <span class="eyebrow">{{ 'register.eyebrow' | transloco }}</span>
+    <h1>{{ 'register.title' | transloco }}</h1>
+    <p>{{ 'register.subtitle' | transloco }}</p>
+  </div>
+  <div class="panel register-panel p-4 md:p-6">
+    @if (error()) {
+      <p-message severity="error">{{ error() }}</p-message>
+    }
+    <form [formGroup]="form" (ngSubmit)="submit()" class="grid" novalidate>
+      <div class="field col-12 md:col-6">
+        <label for="firstName">{{ 'form.firstName' | transloco }}</label
+        ><input pInputText id="firstName" formControlName="firstName" autocomplete="given-name" />
+        @if (invalid('firstName')) {
+          <small class="field-error">{{ 'validation.firstNameRequired' | transloco }}</small>
+        }
+      </div>
+      <div class="field col-12 md:col-6">
+        <label for="lastName">{{ 'form.lastName' | transloco }}</label
+        ><input pInputText id="lastName" formControlName="lastName" autocomplete="family-name" />
+        @if (invalid('lastName')) {
+          <small class="field-error">{{ 'validation.lastNameRequired' | transloco }}</small>
+        }
+      </div>
+      <div class="field col-12">
+        <label for="email">{{ 'common.email' | transloco }}</label
+        ><input pInputText id="email" type="email" formControlName="email" autocomplete="email" />
+        @if (invalid('email')) {
+          <small class="field-error">{{ 'validation.email' | transloco }}</small>
+        }
+      </div>
+      <div class="field col-12 md:col-6">
+        <label for="fiscalCode">{{ 'register.fiscalCode' | transloco }}</label
+        ><input
+          pInputText
+          id="fiscalCode"
+          formControlName="fiscalCode"
+          maxlength="16"
+          class="uppercase"
+          autocomplete="off"
+        />
+        @if (invalid('fiscalCode')) {
+          <small class="field-error">{{ 'register.fiscalCodeError' | transloco }}</small>
+        }
+      </div>
+      <div class="field col-12 md:col-6">
+        <label for="birthDate">{{ 'register.birthDate' | transloco }}</label
+        ><p-datepicker
+          inputId="birthDate"
+          formControlName="birthDate"
+          [showIcon]="true"
+          dateFormat="dd/mm/yy"
+          [maxDate]="today"
+        />
+        @if (invalid('birthDate')) {
+          <small class="field-error">{{ 'validation.birthDateRequired' | transloco }}</small>
+        }
+      </div>
+      <div class="field col-12">
+        <label for="structure">{{ 'register.structure' | transloco }}</label
+        ><p-select
+          inputId="structure"
+          [options]="structures()"
+          optionLabel="name"
+          optionValue="id"
+          formControlName="structureId"
+          [placeholder]="'register.structurePlaceholder' | transloco"
+        />
+        @if (invalid('structureId')) {
+          <small class="field-error">{{ 'register.structureError' | transloco }}</small>
+        }
+      </div>
+      <div class="field col-12">
+        <label for="password">{{ 'common.password' | transloco }}</label
+        ><p-password
+          inputId="password"
+          formControlName="password"
+          [toggleMask]="true"
+          [promptLabel]="'register.passwordPrompt' | transloco"
+          [weakLabel]="'register.pwWeak' | transloco"
+          [mediumLabel]="'register.pwMedium' | transloco"
+          [strongLabel]="'register.pwStrong' | transloco"
+          autocomplete="new-password"
+        />
+        @if (invalid('password')) {
+          <small class="field-error">{{ 'validation.passwordMin' | transloco }}</small>
+        }
+      </div>
+      <p-message class="col-12" severity="info" variant="simple">{{ 'register.consent' | transloco }}</p-message>
+      <div class="col-12">
+        <p-button type="submit" [label]="'register.submit' | transloco" icon="pi pi-user-plus" [loading]="loading()" fluid />
+      </div>
+    </form>
+    <p class="switch text-center mt-5 mb-0 text-sm">{{ 'register.hasAccount' | transloco }} <a routerLink="/login">{{ 'register.loginLink' | transloco }}</a></p>
+  </div>
+</section>

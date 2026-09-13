@@ -1,0 +1,2 @@
+# Mantieni la cartella uploads nel repository anche se vuota.
+# I file allegati (PDF referti) sono ignorati da .gitignore.

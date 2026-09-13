@@ -1,0 +1,6 @@
+dist/
+node_modules/
+coverage/
+ng.out
+package-lock.json
+*.docx

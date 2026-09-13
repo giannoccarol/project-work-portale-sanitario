@@ -1,0 +1,76 @@
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow"><i class="pi pi-heart-fill"></i> {{ 'home.heroEyebrow' | transloco }}</span>
+      <h1>{{ 'home.heroTitle1' | transloco }}<br /><em>{{ 'home.heroTitle2' | transloco }}</em></h1>
+      <p>
+        {{ 'home.heroText' | transloco }}
+      </p>
+      <div class="hero-actions">
+        <p-button [label]="'home.ctaFindDoctor' | transloco" icon="pi pi-search" (onClick)="go('/doctors')" />
+        <p-button
+          [label]="'home.ctaEnterPortal' | transloco"
+          icon="pi pi-arrow-right"
+          iconPos="right"
+          [outlined]="true"
+          (onClick)="go('/login')"
+        />
+      </div>
+      <div class="trust">
+        <span><i class="pi pi-clock"></i> {{ 'home.trustAlways' | transloco }}</span>
+      </div>
+    </div>
+    <div class="hero-visual" [attr.aria-label]="'home.visualAria' | transloco">
+      <div class="visual-orbit orbit-a"></div>
+      <div class="visual-orbit orbit-b"></div>
+      <div class="appointment-card">
+        <div class="appointment-card__top">
+          <span class="doctor-avatar">MR</span
+          ><span
+            ><small>{{ 'home.nextVisit' | transloco }}</small
+            ><strong>{{ 'home.demoDoctor' | transloco }}</strong
+            ><em>{{ 'home.demoSpecialty' | transloco }}</em></span
+          ><i class="pi pi-check-circle"></i>
+        </div>
+        <div class="appointment-card__time">
+          <span><i class="pi pi-calendar"></i><strong>{{ 'home.demoDate' | transloco }}</strong></span
+          ><span><i class="pi pi-clock"></i><strong>10:30</strong></span>
+        </div>
+      </div>
+      <div class="floating-card floating-card--report">
+        <i class="pi pi-file-check"></i><span><small>{{ 'home.newReport' | transloco }}</small><strong>{{ 'home.available' | transloco }}</strong></span>
+      </div>
+      <div class="floating-card floating-card--secure">
+        <i class="pi pi-lock"></i><span><small>{{ 'home.clinicalAccess' | transloco }}</small><strong>{{ 'home.protectedLabel' | transloco }}</strong></span>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="services container">
+  <div class="section-heading">
+    <span class="eyebrow">{{ 'home.servicesEyebrow' | transloco }}</span>
+    <h2>{{ 'home.servicesTitle' | transloco }}</h2>
+    <p>{{ 'home.servicesText' | transloco }}</p>
+  </div>
+  <div class="service-grid">
+    @for (service of services; track service.titleKey) {
+      <p-card
+        ><ng-template #header
+          ><span class="service-icon"><i [class]="service.icon"></i></span></ng-template
+        ><ng-template #title>{{ service.titleKey | transloco }}</ng-template>
+        <p>{{ service.textKey | transloco }}</p>
+        <a [routerLink]="service.route">{{ 'home.learnMore' | transloco }} <i class="pi pi-arrow-right"></i></a
+      ></p-card>
+    }
+  </div>
+</section>
+<section class="journey">
+  <div class="container journey-inner">
+    <div>
+      <span class="eyebrow">{{ 'home.journeyEyebrow' | transloco }}</span>
+      <h2>{{ 'home.journeyTitle' | transloco }}</h2>
+      <p>{{ 'home.journeyText' | transloco }}</p>
+    </div>
+    <p-button class="journey-cta" [label]="'home.ctaCreateAccount' | transloco" icon="pi pi-user-plus" (onClick)="go('/register')" />
+  </div>
+</section>

@@ -1,0 +1,52 @@
+<div class="page detail-page">
+  <p-button [label]="'common.back' | transloco" icon="pi pi-arrow-left" [text]="true" (onClick)="back()" />
+  @if (loading()) {
+    <div class="panel empty-state"><i class="pi pi-spin pi-spinner"></i><p>{{ 'appointments.loading' | transloco }}</p></div>
+  } @else if (error()) {
+    <p-message severity="warn">{{ error() }}</p-message>
+  } @else if (appointment(); as item) {
+    <header class="detail-heading">
+      <div>
+        <span class="eyebrow">{{ 'appointments.detailEyebrow' | transloco }}</span>
+        <h1>{{ 'appointments.detailTitle' | transloco }}</h1>
+        <p>{{ item.startTime | date: 'EEEE d MMMM y · HH:mm' : 'Europe/Rome' : locale() }}</p>
+      </div>
+      <p-tag [value]="statusLabel()" [severity]="statusSeverity()" />
+    </header>
+
+    <div class="detail-grid grid">
+      <section class="panel detail-card col-12 md:col-6">
+        <span class="detail-icon"><i class="pi pi-user"></i></span>
+        <small>{{ auth.role() === 'doctor' ? ('appointments.patient' | transloco) : ('appointments.doctor' | transloco) }}</small>
+        <h2>{{ counterpart() }}</h2>
+        <p>{{ item.doctor.specialization.name }} · {{ item.structure.name }}</p>
+      </section>
+      <section class="panel detail-card col-12 md:col-6">
+        <span class="detail-icon"><i class="pi pi-clock"></i></span>
+        <small>{{ 'appointments.duration' | transloco }}</small>
+        <h2>{{ item.startTime | date: 'HH:mm' : 'Europe/Rome' }} – {{ item.endTime | date: 'HH:mm' : 'Europe/Rome' }}</h2>
+        <p>{{ item.reason || ('appointments.noReason' | transloco) }}</p>
+      </section>
+    </div>
+
+    <section class="panel detail-card report-link-card flex flex-column sm:flex-row align-items-stretch sm:align-items-center justify-content-between gap-3">
+      <div>
+        <span class="eyebrow">{{ 'appointments.clinicalDocument' | transloco }}</span>
+        @if (report(); as linkedReport) {
+          <h2>{{ linkedReport.diagnosis || ('reports.defaultTitle' | transloco) }}</h2>
+          <p>{{ linkedReport.status === 'published' ? ('reports.published' | transloco) : ('reports.draft' | transloco) }}</p>
+        } @else {
+          <h2>{{ 'appointments.noReportTitle' | transloco }}</h2>
+          <p>{{ 'appointments.noReportText' | transloco }}</p>
+        }
+      </div>
+      @if (report()) {
+        <p-button [label]="'appointments.openReport' | transloco" icon="pi pi-file" (onClick)="openReport()" />
+      }
+    </section>
+
+    <div class="detail-actions flex justify-content-end mt-3">
+      <p-button class="w-full sm:w-auto" [label]="'appointments.openFolder' | transloco" icon="pi pi-folder-open" [outlined]="true" (onClick)="openFolder()" />
+    </div>
+  }
+</div>

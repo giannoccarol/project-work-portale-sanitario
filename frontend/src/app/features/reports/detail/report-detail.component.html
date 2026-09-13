@@ -1,0 +1,44 @@
+<div class="page detail-page report-detail-page">
+  <p-button [label]="'common.back' | transloco" icon="pi pi-arrow-left" [text]="true" (onClick)="back()" />
+  @if (loading()) {
+    <div class="panel empty-state"><i class="pi pi-spin pi-spinner"></i><p>{{ 'reports.loading' | transloco }}</p></div>
+  } @else if (error()) {
+    <p-message severity="warn">{{ error() }}</p-message>
+  } @else if (report(); as item) {
+    <header class="detail-heading">
+      <div>
+        <span class="eyebrow">{{ 'reports.detailEyebrow' | transloco }}</span>
+        <h1>{{ item.diagnosis || ('reports.defaultTitle' | transloco) }}</h1>
+        <p>{{ 'reports.visitOf' | transloco: { date: (item.appointment.startTime | date: 'dd MMMM y · HH:mm' : 'Europe/Rome' : locale()) } }}</p>
+      </div>
+      <p-tag [value]="statusLabel()" [severity]="item.status === 'published' ? 'success' : 'warn'" />
+    </header>
+
+    <section class="panel report-meta">
+      <div><small>{{ auth.role() === 'patient' ? ('reports.doctor' | transloco) : ('reports.patient' | transloco) }}</small><strong>{{ personName(item) }}</strong></div>
+      <div><small>{{ 'reports.updated' | transloco }}</small><strong>{{ item.updatedAt | date: 'dd/MM/y HH:mm' : 'Europe/Rome' }}</strong></div>
+      <div><small>{{ 'reports.attachment' | transloco }}</small><strong>{{ item.hasAttachment ? ('reports.attachmentAvailable' | transloco) : ('reports.none' | transloco) }}</strong></div>
+    </section>
+
+    @if (auth.role() === 'doctor' && item.status === 'draft') {
+      <section class="panel report-form">
+        <div class="section-title"><i class="pi pi-pencil"></i><div><h2>{{ 'reports.editDraft' | transloco }}</h2><p>{{ 'reports.editDraftHint' | transloco }}</p></div></div>
+        <label class="field"><span>{{ 'reports.diagnosis' | transloco }}</span><textarea pTextarea [(ngModel)]="draft.diagnosis" rows="4"></textarea></label>
+        <label class="field"><span>{{ 'reports.prescriptions' | transloco }}</span><textarea pTextarea [(ngModel)]="draft.prescriptions" rows="3"></textarea></label>
+        <label class="field"><span>{{ 'reports.notes' | transloco }}</span><textarea pTextarea [(ngModel)]="draft.notes" rows="3"></textarea></label>
+        <div class="field"><span>{{ 'reports.attachmentReplace' | transloco }}</span><p-fileupload mode="basic" [chooseLabel]="'reports.attachmentReplace' | transloco" chooseIcon="pi pi-upload" accept="application/pdf,.pdf" (onSelect)="setFile($event)" /></div>
+        <div class="report-actions"><p-button [label]="'reports.saveChanges' | transloco" icon="pi pi-save" [loading]="saving()" [disabled]="!draft.diagnosis" (onClick)="save()" /><p-button [label]="'reports.publish' | transloco" icon="pi pi-send" severity="success" [outlined]="true" (onClick)="publish()" /></div>
+      </section>
+    } @else {
+      <section class="panel report-content">
+        <div><span class="field-label">{{ 'reports.diagnosis' | transloco }}</span><p>{{ item.diagnosis || ('reports.none' | transloco) }}</p></div>
+        <div><span class="field-label">{{ 'reports.prescriptions' | transloco }}</span><p>{{ item.prescriptions || ('reports.none' | transloco) }}</p></div>
+        <div><span class="field-label">{{ 'reports.notes' | transloco }}</span><p>{{ item.notes || ('reports.none' | transloco) }}</p></div>
+      </section>
+    }
+
+    @if (item.hasAttachment && item.status === 'published') {
+      <div class="report-actions bottom-actions"><p-button [label]="'reports.download' | transloco" icon="pi pi-download" [outlined]="true" (onClick)="download()" /></div>
+    }
+  }
+</div>
